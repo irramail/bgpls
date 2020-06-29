@@ -54,14 +54,13 @@ fn set_first_run() -> redis::RedisResult<isize> {
 
   let _ : () = con.set("all_bg_pls", "")?;
   let _ : () = con.set("list_all_js", "
-  var $table = $('<table>');
-  $table.append('<caption>MyTable</caption>').append('<thead>').children('thead').append('<tr />').children('tr').append('<th>A</th><th>B</th><th>C</th><th>D</th>');
-  var $tbody = $table.append('<tbody />').children('tbody');
-  $tbody.append('<tr />').children('tr:last').append('<td>val</td>').append('<td>val</td>').append('<td>val</td>').append('<td>val</td>');
-  $tbody.append('<tr />').children('tr:last').append('<td>val</td>').append('<td>val</td>').append('<td>val</td>').append('<td>val</td>');
-  $table.appendTo('body');
+  var $table = $('<table>').attr('id', 'bgpls');
+  $table.append('<thead>').children('thead').append('<tr />').children('tr').append('<th>#</th><th>Описание</th><th>Дата создания</th>');
   ")?;
 
+  //  var $tbody = $table.append('<tbody />').children('tbody');
+  //   $tbody.append('<tr />').children('tr:last').append('<td>val</td>').append('<td>val</td>').append('<td>val</td>').append('<td>val</td>');
+  //   $table.appendTo('body');
   con.get("all_bg_pls")
 }
 

@@ -53,7 +53,14 @@ fn set_first_run() -> redis::RedisResult<isize> {
   let mut con = client.get_connection()?;
 
   let _ : () = con.set("all_bg_pls", "")?;
-  let _ : () = con.set("list_all_js", "function listAll(){ $(\"table\").attr(\"id\", \"list-all\"); $('#list-all > thead:last-child').append('<tr><th>id</th><th>name</th></tr>');}; listAll();")?;
+  let _ : () = con.set("list_all_js", "
+  var $table = $('<table>');
+  $table.append('<caption>MyTable</caption>').append('<thead>').children('thead').append('<tr />').children('tr').append('<th>A</th><th>B</th><th>C</th><th>D</th>');
+  var $tbody = $table.append('<tbody />').children('tbody');
+  $tbody.append('<tr />').children('tr:last').append('<td>val</td>').append('<td>val</td>').append('<td>val</td>').append('<td>val</td>');
+  $tbody.append('<tr />').children('tr:last').append('<td>val</td>').append('<td>val</td>').append('<td>val</td>').append('<td>val</td>');
+  $table.appendTo('body');
+  ")?;
 
   con.get("all_bg_pls")
 }

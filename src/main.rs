@@ -80,7 +80,7 @@ fn main() {
   io.add_method("get_bg_pls_by_id",  move |params: Params| {
     let id = parse_arguments(params)?;
     let bg_pls = get_bg_pls_by_id(&id[0]).unwrap();
-
+    println!("{}", bg_pls);
     Ok(Value::String(bg_pls))
   });
 

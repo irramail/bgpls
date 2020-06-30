@@ -38,6 +38,14 @@ fn get_list_all_js() -> redis::RedisResult<String> {
   con.get("list_all_js")
 }
 
+
+fn get_bg_pls_by_id(id: &str) -> redis::RedisResult<String> {
+  let client = redis::Client::open("redis://127.0.0.1/")?;
+  let mut con = client.get_connection()?;
+
+  con.get("bg_pls_by_".to_owned()+id)
+}
+
 fn set_text(mpgatext: &str) -> redis::RedisResult<isize> {
   let client = redis::Client::open("redis://127.0.0.1/")?;
   let mut con = client.get_connection()?;
@@ -69,11 +77,11 @@ fn main() {
 
   let _ = set_first_run();
 
-  io.add_method("set_text",  move |params: Params| {
-    let w = parse_arguments(params)?;
-    let _ = set_text(&w[0]);
+  io.add_method("get_bg_pls_by_id",  move |params: Params| {
+    let id = parse_arguments(params)?;
+    let bg_pls = get_bg_pls_by_id(&id[0]).unwrap();
 
-    Ok(Value::String("".to_string()))
+    Ok(Value::String(bg_pls))
   });
 
   io.add_method("get_all_bg_pls",  | _params | {

@@ -43,7 +43,7 @@ fn get_bg_pls_by_id(id: &str) -> redis::RedisResult<String> {
   let client = redis::Client::open("redis://127.0.0.1/")?;
   let mut con = client.get_connection()?;
 
-  con.get("bg_pls_by_".to_owned()+id)
+  con.get("bgpls".to_owned()+id)
 }
 
 fn set_text(mpgatext: &str) -> redis::RedisResult<isize> {
@@ -60,10 +60,10 @@ fn set_first_run() -> redis::RedisResult<isize> {
   let client = redis::Client::open("redis://127.0.0.1/")?;
   let mut con = client.get_connection()?;
 
-  let _ : () = con.set("all_bg_pls", "")?;
+  //let _ : () = con.set("all_bg_pls", "")?;
   let _ : () = con.set("list_all_js", "
   var $table = $('<table>').attr('id', 'bgpls');
-  $table.append('<thead>').children('thead').append('<tr />').children('tr').append('<th>#</th><th>Описание</th><th>Дата создания</th>');
+  $table.append('<thead>').children('thead').append('<tr />').children('tr').append('<th>#</th><th>Дата создания</th><th>Описание</th>');
   ")?;
 
   //  var $tbody = $table.append('<tbody />').children('tbody');

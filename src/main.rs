@@ -32,11 +32,11 @@ fn get_all_bg_pls() -> redis::RedisResult<String> {
   con.get("all_bg_pls")
 }
 
-fn get_js_list_all() -> redis::RedisResult<String> {
+fn get_js_bgpls() -> redis::RedisResult<String> {
   let client = redis::Client::open("redis://127.0.0.1/")?;
   let mut con = client.get_connection()?;
 
-  con.get("js_list_all")
+  con.get("js_bgpls")
 }
 
 
@@ -65,10 +65,10 @@ fn set_first_run() -> redis::RedisResult<isize> {
   let mut con = client.get_connection()?;
 
   //let _ : () = con.set("all_bg_pls", "")?;
-//  let _ : () = con.set("list_all_js", "
-//  var $table = $('<table>').attr('id', 'bgpls');
-//  $table.append('<thead>').children('thead').append('<tr />').children('tr').append('<th>#</th><th>Дата создания</th><th>Описание</th>');
-//  ")?;
+  let _ : () = con.set("js_bgpls", "
+  var $table = $('<table>').attr('id', 'bgpls');
+  $table.append('<thead>').children('thead').append('<tr />').children('tr').append('<th>#</th><th>Дата создания</th><th>Описание</th>');
+  ")?;
 
   //  var $tbody = $table.append('<tbody />').children('tbody');
   //   $tbody.append('<tr />').children('tr:last').append('<td>val</td>').append('<td>val</td>').append('<td>val</td>').append('<td>val</td>');
@@ -94,8 +94,8 @@ fn main() {
     Ok(Value::String(text))
   });
 
-  io.add_method("get_js_list_all",  | _params | {
-    let text = get_js_list_all().unwrap();
+  io.add_method("get_js_bgpls",  | _params | {
+    let text = get_js_bgpls().unwrap();
 
     Ok(Value::String(text))
   });

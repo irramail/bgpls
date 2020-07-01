@@ -32,11 +32,11 @@ fn get_all_bg_pls() -> redis::RedisResult<String> {
   con.get("all_bg_pls")
 }
 
-fn get_list_all_js() -> redis::RedisResult<String> {
+fn get_js_list_all() -> redis::RedisResult<String> {
   let client = redis::Client::open("redis://127.0.0.1/")?;
   let mut con = client.get_connection()?;
 
-  con.get("list_all_js")
+  con.get("js_list_all")
 }
 
 
@@ -94,8 +94,8 @@ fn main() {
     Ok(Value::String(text))
   });
 
-  io.add_method("get_list_all_js",  | _params | {
-    let text = get_list_all_js().unwrap();
+  io.add_method("get_js_list_all",  | _params | {
+    let text = get_js_list_all().unwrap();
 
     Ok(Value::String(text))
   });

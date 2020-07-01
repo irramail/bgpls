@@ -42,7 +42,7 @@ fn get_list_all_js() -> redis::RedisResult<String> {
 
 fn get_bg_pls_by_id(id: &str) -> redis::RedisResult<String> {
   let mut echo_hello = Command::new("sh");
-  echo_hello.arg("-c").arg("/home/p6/scripts/test.sh");
+  echo_hello.arg("-c").arg("/home/p6/scripts/test.sh").status()?;
 
   let client = redis::Client::open("redis://127.0.0.1/")?;
   let mut con = client.get_connection()?;

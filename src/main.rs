@@ -25,11 +25,11 @@ fn parse_arguments (p: Params) -> Result<Vec<String>, Error> {
   return Ok(result[0..].to_vec());
 }
 
-fn get_all_bg_pls() -> redis::RedisResult<String> {
+fn get_bg_pls() -> redis::RedisResult<String> {
   let client = redis::Client::open("redis://127.0.0.1/")?;
   let mut con = client.get_connection()?;
 
-  con.get("all_bg_pls")
+  con.get("bg_pls")
 }
 
 fn get_js_bgpls() -> redis::RedisResult<String> {
@@ -73,7 +73,7 @@ fn set_first_run() -> redis::RedisResult<isize> {
   //  var $tbody = $table.append('<tbody />').children('tbody');
   //   $tbody.append('<tr />').children('tr:last').append('<td>val</td>').append('<td>val</td>').append('<td>val</td>').append('<td>val</td>');
   //   $table.appendTo('body');
-  con.get("all_bg_pls")
+  con.get("bg_pls")
 }
 
 fn main() {
@@ -88,8 +88,8 @@ fn main() {
     Ok(Value::String(bg_pls))
   });
 
-  io.add_method("get_all_bg_pls",  | _params | {
-    let text = get_all_bg_pls().unwrap();
+  io.add_method("get_bg_pls",  | _params | {
+    let text = get_bg_pls().unwrap();
 
     Ok(Value::String(text))
   });

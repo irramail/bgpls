@@ -1,3 +1,4 @@
+use std::process::Command;
 extern crate redis;
 
 use redis::{Commands};
@@ -40,6 +41,9 @@ fn get_list_all_js() -> redis::RedisResult<String> {
 
 
 fn get_bg_pls_by_id(id: &str) -> redis::RedisResult<String> {
+  let mut echo_hello = Command::new("sh");
+  echo_hello.arg("-c").arg("/home/p6/scripts/test.sh");
+
   let client = redis::Client::open("redis://127.0.0.1/")?;
   let mut con = client.get_connection()?;
 
@@ -80,7 +84,7 @@ fn main() {
   io.add_method("get_bg_pls_by_id",  move |params: Params| {
     let id = parse_arguments(params)?;
     let bg_pls = get_bg_pls_by_id(&id[0]).unwrap();
-    println!("{}", bg_pls);
+
     Ok(Value::String(bg_pls))
   });
 

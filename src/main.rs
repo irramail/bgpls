@@ -42,7 +42,7 @@ fn get_js_bgpls() -> redis::RedisResult<String> {
 
 fn get_bg_pls_by_id(id: &str) -> redis::RedisResult<String> {
   let mut echo_hello = Command::new("sh");
-  echo_hello.arg("-c").arg("/home/uid0001/scripts/get_bgpls_id_alias_by_order_id.sh".to_owned() + id).status()?;
+  echo_hello.arg("-c").arg("/home/uid0001/scripts/get_bgpls_id_alias_by_order_id.sh ".to_owned() + id).status()?;
 
   let client = redis::Client::open("redis://127.0.0.1/")?;
   let mut con = client.get_connection()?;

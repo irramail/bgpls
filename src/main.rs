@@ -56,6 +56,9 @@ fn set_bg_pls(create_bg_pls: &str) -> redis::RedisResult<isize> {
 
   let _ : () = con.set("newbgpls", create_bg_pls)?;
 
+  let mut echo_hello = Command::new("sh");
+  echo_hello.arg("-c").arg("/home/uid0001/scripts/wget_newbgpls.sh").status()?;
+
   con.get("newbgpls")
 }
 

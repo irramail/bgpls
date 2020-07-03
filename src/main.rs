@@ -82,9 +82,9 @@ fn main() {
 
   io.add_method("set_bg_pls",  move |params: Params| {
     let json = parse_arguments(params)?;
-    let size = set_bg_pls(&json[0]).unwrap();
+    let _ = set_bg_pls(&json[0]);
 
-    Ok(Value::String(size.to_string()))
+    Ok(Value::String("Ok".to_string()))
   });
 
   io.add_method("get_bg_pls_by_id",  move |params: Params| {

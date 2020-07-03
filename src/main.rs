@@ -54,9 +54,9 @@ fn set_bg_pls(create_bg_pls: &str) -> redis::RedisResult<isize> {
   let client = redis::Client::open("redis://127.0.0.1/")?;
   let mut con = client.get_connection()?;
 
-  let _ : () = con.set("create_bg_pls", create_bg_pls)?;
+  let _ : () = con.set("newbgpls", create_bg_pls)?;
 
-  con.get("create_bg_pls")
+  con.get("newbgpls")
 }
 
 fn set_first_run() -> redis::RedisResult<isize> {

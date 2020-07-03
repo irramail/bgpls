@@ -50,14 +50,13 @@ fn get_bg_pls_by_id(id: &str) -> redis::RedisResult<String> {
   con.get("bgpls".to_owned()+id)
 }
 
-fn set_text(mpgatext: &str) -> redis::RedisResult<isize> {
+fn set_bg_pls(create_bg_pls: &str) -> redis::RedisResult<isize> {
   let client = redis::Client::open("redis://127.0.0.1/")?;
   let mut con = client.get_connection()?;
 
-  let _ : () = con.set("mpgatext", mpgatext)?;
-  let _ : () = con.set("mpgastext", mpgatext)?;
+  let _ : () = con.set("create_bg_pls", create_bg_pls)?;
 
-  con.get("mpgatext")
+  con.get("create_bg_pls")
 }
 
 fn set_first_run() -> redis::RedisResult<isize> {
@@ -80,6 +79,13 @@ fn main() {
   let mut io = IoHandler::new();
 
   let _ = set_first_run();
+
+  io.add_method("set_bg_pls",  move |params: Params| {
+    let id = parse_arguments(params)?;
+    let bg_pls = set_bg_plps(&id[0]).unwrap();
+
+    Ok(Value::String(bg_pls))
+  });
 
   io.add_method("get_bg_pls_by_id",  move |params: Params| {
     let id = parse_arguments(params)?;

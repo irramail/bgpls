@@ -82,7 +82,7 @@ fn main() {
 
   io.add_method("set_bg_pls",  move |params: Params| {
     let id = parse_arguments(params)?;
-    let bg_pls = set_bg_plps(&id[0]).unwrap();
+    let bg_pls = set_bg_pls(&id[0]).unwrap();
 
     Ok(Value::String(bg_pls))
   });

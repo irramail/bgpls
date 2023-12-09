@@ -1,10 +1,9 @@
-use std::process::Command;
 extern crate redis;
 
 use jsonrpc_http_server::jsonrpc_core::{Error, IoHandler, Params, Value};
 use jsonrpc_http_server::ServerBuilder;
-use redis::Commands;
-use redis::{Client, RedisError, RedisResult};
+use redis::{Client, Commands, RedisError, RedisResult};
+use std::process::Command;
 
 const REDISURI: &'static str = "redis://127.0.0.1/";
 

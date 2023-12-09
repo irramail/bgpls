@@ -131,8 +131,15 @@ fn main() {
 
     let server = ServerBuilder::new(io)
         .threads(3)
-        .start_http(&format!("{}:{}", host, port).parse().unwrap())
-        .unwrap();
+        .start_http(&format!("{}:{}", host, port).parse().unwrap());
 
-    server.wait();
+    match server {
+        Ok(server) => {
+            println!("server run");
+            server.wait();
+        }
+        Err(e) => {
+            println!("{:#?}", e);
+        }
+    };
 }

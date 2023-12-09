@@ -9,6 +9,20 @@ use std::process::Command;
 const REDISURI: &'static str = "redis://127.0.0.1/";
 const SCRIPTS: &'static str = "/home/uid0001/scripts";
 
+struct Rediskey<'a> {
+    bgpls: &'a str,
+    bg_pls: &'a str,
+    newbgpls: &'a str,
+    js_bgpls: &'a str,
+}
+
+const REDISKEY: Rediskey<'static> = Rediskey {
+    newbgpls: "newbgpls",
+    bgpls: "bgpls",
+    js_bgpls: "js_bgpls",
+    bg_pls: "bg_pls",
+};
+
 fn parse_arguments(p: Params) -> Result<Vec<String>, Error> {
     let mut result = Vec::new();
     match p {
@@ -37,12 +51,12 @@ fn create_redis_connection() -> Result<redis::Connection, RedisError> {
 
 fn get_bg_pls() -> RedisResult<String> {
     let mut con = create_redis_connection()?;
-    con.get("bg_pls")
+    con.get(REDISKEY.bg_pls)
 }
 
 fn get_js_bgpls() -> RedisResult<String> {
     let mut con = create_redis_connection()?;
-    con.get("js_bgpls")
+    con.get(REDISKEY.js_bgpls)
 }
 
 fn get_bg_pls_by_id(id: &str) -> RedisResult<String> {
@@ -53,7 +67,7 @@ fn get_bg_pls_by_id(id: &str) -> RedisResult<String> {
         .status()?;
 
     let mut con = create_redis_connection()?;
-    con.get("bgpls".to_owned() + id)
+    con.get(REDISKEY.bgpls.to_owned() + id)
 }
 
 fn set_bg_pls(create_bg_pls: &str) -> RedisResult<isize> {
@@ -67,7 +81,7 @@ fn set_bg_pls(create_bg_pls: &str) -> RedisResult<isize> {
         .arg(format!("{}/{}", SCRIPTS, "wget_newbgpls.sh")
         .status()?;
 
-    con.get("newbgpls")
+    con.get(REDISKEY.newbgpls)
 }
 
 fn set_first_run() -> redis::RedisResult<isize> {
@@ -78,7 +92,7 @@ fn set_first_run() -> redis::RedisResult<isize> {
   $table.append('<thead>').children('thead').append('<tr />').children('tr').append('<th>#</th><th>Дата создания</th><th>Описание</th>');
   ")?;
 
-    con.get("bg_pls")
+    con.get(REDISKEY.bg_pls)
 }
 
 fn main() {

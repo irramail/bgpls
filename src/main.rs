@@ -3,6 +3,7 @@ extern crate redis;
 use jsonrpc_http_server::jsonrpc_core::{Error, IoHandler, Params, Value};
 use jsonrpc_http_server::ServerBuilder;
 use redis::{Client, Commands, RedisError, RedisResult};
+use std::env;
 use std::process::Command;
 
 const REDISURI: &'static str = "redis://127.0.0.1/";
@@ -82,6 +83,9 @@ fn set_first_run() -> redis::RedisResult<isize> {
 }
 
 fn main() {
+    let host = env::var("HOST").unwrap_or("127.0.0.1".to_string());
+    let port = env::var("PORT").unwrap_or("3032".to_string());
+
     let mut io = IoHandler::new();
 
     let _ = set_first_run();
@@ -114,7 +118,7 @@ fn main() {
 
     let server = ServerBuilder::new(io)
         .threads(3)
-        .start_http(&"127.0.0.1:3032".parse().unwrap())
+        .start_http(&format!("{}:{}", host, port).parse().unwrap())
         .unwrap();
 
     server.wait();

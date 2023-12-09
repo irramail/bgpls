@@ -7,12 +7,13 @@ use std::env;
 use std::process::Command;
 
 const REDISURI: &'static str = "redis://127.0.0.1/";
+const SCRIPTS: &'static str = "/home/uid0001/scripts";
 
 fn parse_arguments(p: Params) -> Result<Vec<String>, Error> {
     let mut result = Vec::new();
     match p {
-        Params::Array(array) => {
-            for s in &array {
+        Params::Array(data) => {
+            for s in &data {
                 match s {
                     Value::String(s) => result.push(s.clone()),
                     _ => return Err(Error::invalid_params("expecting strings")),
@@ -41,7 +42,6 @@ fn get_bg_pls() -> RedisResult<String> {
 
 fn get_js_bgpls() -> RedisResult<String> {
     let mut con = create_redis_connection()?;
-
     con.get("js_bgpls")
 }
 
@@ -49,11 +49,10 @@ fn get_bg_pls_by_id(id: &str) -> RedisResult<String> {
     let mut echo_hello = Command::new("sh");
     echo_hello
         .arg("-c")
-        .arg("/home/uid0001/scripts/get_bgpls_id_alias_by_order_id.sh ".to_owned() + id)
+        .arg(format!("{}/{}", SCRIPTS, "get_bgpls_id_alias_by_order_id.sh").to_owned() + id)
         .status()?;
 
     let mut con = create_redis_connection()?;
-
     con.get("bgpls".to_owned() + id)
 }
 
@@ -65,7 +64,7 @@ fn set_bg_pls(create_bg_pls: &str) -> RedisResult<isize> {
     let mut echo_hello = Command::new("sh");
     echo_hello
         .arg("-c")
-        .arg("/home/uid0001/scripts/wget_newbgpls.sh")
+        .arg(format!("{}/{}", SCRIPTS, "wget_newbgpls.sh")
         .status()?;
 
     con.get("newbgpls")
